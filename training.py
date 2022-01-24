@@ -29,7 +29,7 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
     # print('tqdm')
     # The tqdm module allows to display a smart progress meter for iterables
     # using tqdm(iterable).
-
+    print('right before enumerating tqdm(loader)')
     for batch_idx, (data, targets) in enumerate(loop):
         print('unpack enum success')
         # data = data.to(device=DEVICE)
