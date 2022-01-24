@@ -31,7 +31,7 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
     # using tqdm(iterable).
 
     for batch_idx, (data, targets) in enumerate(loop):
-        # print('enum(loop)')
+        print('unpack enum success')
         # data = data.to(device=DEVICE)
         data = data.float().unsqueeze(1).to(device=DEVICE)
         print('data success')
