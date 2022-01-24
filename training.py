@@ -26,6 +26,7 @@ LOAD_MODEL = False
 def train_fn(loader, model, optimizer, loss_fn, scaler):
     # The train function will complete one epoch of the training cycle.
     loop = tqdm(loader)
+
     # print('tqdm')
     # The tqdm module allows to display a smart progress meter for iterables
     # using tqdm(iterable).
