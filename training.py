@@ -11,7 +11,7 @@ from utils import get_loaders, check_accuracy
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 5
-NUM_EPOCHS = 3
+NUM_EPOCHS = 10
 NUM_WORKERS = 1
 IMAGE_HEIGHT = 64  # 1280 originally
 IMAGE_WIDTH = 64  # 1918 originally
