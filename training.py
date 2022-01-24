@@ -33,10 +33,10 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
     for batch_idx, (data, targets) in enumerate(loop):
         # print('enum(loop)')
         # data = data.to(device=DEVICE)
-        data = data.float().unsqueeze(1).to(device=DEVICE)
+        data = data.long().unsqueeze(1).to(device=DEVICE)
         # print('data success')
         # print(f'data.shape = {data.shape}')
-        targets = targets.float().unsqueeze(1).to(device=DEVICE)
+        targets = targets.long().unsqueeze(1).to(device=DEVICE)
         # print('targets success')
         # First consider the forward training path. This means calculate the
         # the predictions and determine the resultung error using the loss_fn.
