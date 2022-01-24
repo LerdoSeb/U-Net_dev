@@ -30,15 +30,15 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
     # print('tqdm')
     # The tqdm module allows to display a smart progress meter for iterables
     # using tqdm(iterable).
-    print('right before enumerating tqdm(loader)')
+    # print('right before enumerating tqdm(loader)')
     for batch_idx, (data, targets) in enumerate(loop):
-        print('unpack enum success')
+        # print('unpack enum success')
         # data = data.to(device=DEVICE)
         data = data.float().unsqueeze(1).to(device=DEVICE)
-        print('data success')
+        # print('data success')
         # print(f'data.shape = {data.shape}')
         targets = targets.float().unsqueeze(1).to(device=DEVICE)
-        print('targets success')
+        # print('targets success')
         # First consider the forward training path. This means calculate the
         # the predictions and determine the resultung error using the loss_fn.
         with torch.cuda.amp.autocast():
@@ -49,11 +49,11 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
             # Other ops, like reductions, often require the dynamic range of
             # float32. Mixed precision tries to match each op to its appropriate
             # datatype.
-            print('autocast success')
+            # print('autocast success')
             predictions = model(data)
-            print('model(data) success')
+            # print('model(data) success')
             loss = loss_fn(predictions.float(), targets.float())
-            print('loss success')
+            # print('loss success')
             # print(f'The current mean average loss is: {loss}.')
 
         # Next consider the backward training path, especially the corresponding
@@ -85,11 +85,11 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         # .step():
         scaler.update()
         # .update():
-        print('scaler.update() success')
+        # print('scaler.update() success')
         # update tqdm loop
-        loop.set_postfix(loss=loss.item())
+        # loop.set_postfix(loss=loss.item())
         # postfix(): Specify additional stats to display at the end of the bar.
-        print('postfix success')
+        # print('postfix success')
 
 
 def main():
