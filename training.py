@@ -84,11 +84,12 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         # .step():
         scaler.update()
         # .update():
-
+        print('scaler.update() success')
         # update tqdm loop
         loop.set_postfix(loss=loss.item())
         # postfix(): Specify additional stats to display at the end of the bar.
-        print('postfix success')
+        # print('postfix success')
+
 
 def main():
     # Our use-case does not require transforming the training data.
