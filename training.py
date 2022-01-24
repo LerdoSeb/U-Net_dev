@@ -51,7 +51,7 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
             # print('autocast success')
             predictions = model(data)
             # print('model(data) success')
-            loss = loss_fn(predictions, targets.float())
+            loss = loss_fn(predictions, targets.long())
             # print(f'The current mean average loss is: {loss}.')
 
         # Next consider the backward training path, especially the corresponding
