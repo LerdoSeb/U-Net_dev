@@ -34,10 +34,10 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         # print('enum(loop)')
         # data = data.to(device=DEVICE)
         data = data.float().unsqueeze(1).to(device=DEVICE)
-        # print('data success')
+        print('data success')
         # print(f'data.shape = {data.shape}')
         targets = targets.float().unsqueeze(1).to(device=DEVICE)
-        # print('targets success')
+        print('targets success')
         # First consider the forward training path. This means calculate the
         # the predictions and determine the resultung error using the loss_fn.
         with torch.cuda.amp.autocast():
@@ -48,10 +48,11 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
             # Other ops, like reductions, often require the dynamic range of
             # float32. Mixed precision tries to match each op to its appropriate
             # datatype.
-            # print('autocast success')
+            print('autocast success')
             predictions = model(data)
-            # print('model(data) success')
+            print('model(data) success')
             loss = loss_fn(predictions.float(), targets.float())
+            print('loss success')
             # print(f'The current mean average loss is: {loss}.')
 
         # Next consider the backward training path, especially the corresponding
