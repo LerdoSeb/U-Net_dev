@@ -21,7 +21,7 @@ def my2DCouetteSolver():
     my_time_upperbound = (1100)*my_timestep
     my_timesteps = np.arange(
         my_timestep, my_time_upperbound, my_timestep).tolist()
-    my_time_zero = [0]*65
+    my_time_zero = [0.0]*65
     # print('length of time_zero: {length}'.format(length=len(my_time_zero)))
     my_data.append(my_time_zero)
     # For the initial u_net test cases, a picture-like resolution of 64x64 is
