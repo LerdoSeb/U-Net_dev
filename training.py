@@ -26,7 +26,6 @@ LOAD_MODEL = False
 def train_fn(loader, model, optimizer, loss_fn, scaler):
     # The train function will complete one epoch of the training cycle.
     loop = tqdm(loader)
-    print(f'Currently using: {DEVICE}.')
 
     # print('tqdm')
     # The tqdm module allows to display a smart progress meter for iterables
@@ -121,7 +120,7 @@ def main():
     #         ToTensorV2(),
     #     ],
     # )
-
+    print(f'Currently using: {DEVICE}.')
     model = UNET(in_channels=1, out_channels=1).to(DEVICE)
     # Instantiates the UNET neural network.
     loss_fn = nn.L1Loss()
