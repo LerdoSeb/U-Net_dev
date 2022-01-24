@@ -31,13 +31,13 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
     # using tqdm(iterable).
 
     for batch_idx, (data, targets) in enumerate(loop):
-        print('enum(loop)')
+        # print('enum(loop)')
         # data = data.to(device=DEVICE)
         data = data.float().unsqueeze(1).to(device=DEVICE)
-        print('data success')
-        print(f'data.shape = {data.shape}')
+        # print('data success')
+        # print(f'data.shape = {data.shape}')
         targets = targets.float().unsqueeze(1).to(device=DEVICE)
-        print('targets success')
+        # print('targets success')
         # First consider the forward training path. This means calculate the
         # the predictions and determine the resultung error using the loss_fn.
         with torch.cuda.amp.autocast():
