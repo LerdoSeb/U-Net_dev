@@ -26,19 +26,13 @@ LOAD_MODEL = False
 def train_fn(loader, model, optimizer, loss_fn, scaler):
     # The train function will complete one epoch of the training cycle.
     loop = tqdm(loader)
-
-    # print('tqdm')
     # The tqdm module allows to display a smart progress meter for iterables
     # using tqdm(iterable).
-    # print('right before enumerating tqdm(loader)')
+
     for batch_idx, (data, targets) in enumerate(loop):
-        # print('unpack enum success')
-        # data = data.to(device=DEVICE)
         data = data.float().unsqueeze(1).to(device=DEVICE)
-        # print('data success')
-        # print(f'data.shape = {data.shape}')
         targets = targets.float().unsqueeze(1).to(device=DEVICE)
-        # print('targets success')
+
         # First consider the forward training path. This means calculate the
         # the predictions and determine the resultung error using the loss_fn.
         with torch.cuda.amp.autocast():
@@ -49,12 +43,8 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
             # Other ops, like reductions, often require the dynamic range of
             # float32. Mixed precision tries to match each op to its appropriate
             # datatype.
-            # print('autocast success')
             predictions = model(data)
-            # print('model(data) success')
             loss = loss_fn(predictions.float(), targets.float())
-            # print('loss success')
-            # print(f'The current mean average loss is: {loss}.')
 
         # Next consider the backward training path, especially the corresponding
         # scaler which is an object of the class GRADIENT SCALING:
@@ -75,21 +65,27 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         # the optimizer updates the parameters, so the scale factor does not
         # interfere with the learning rate.
         optimizer.zero_grad()
-        # .zero_grad(): Sets the gradients of all optimized torch.Tensors to zero.
+        # .zero_grad(): Sets the gradients of all optimized torch.Tensors to 0.
+        #
         scaler.scale(loss).backward()
-        # .scale():
+        # .scale(): Multiplies (‘scales’) a tensor or list of tensors by the
+        # scale factor and returns scaled outputs. If this instance of
+        # GradScaler is not enabled, outputs are returned unmodified.
+        #
         # .backward(): Computes the gradient of current tensor w.r.t. graph
         # leaves. This function accumulates gradients in the leaves - you might
         # need to zero .grad attributes or set them to None before calling it.
+        #
         scaler.step(optimizer)
-        # .step():
+        # .step(): gradients automatically unscaled and returns the return
+        # value of optimizer.step()
+        #
         scaler.update()
         # .update():
-        # print('scaler.update() success')
         # update tqdm loop
         loop.set_postfix(loss=loss.item())
         # postfix(): Specify additional stats to display at the end of the bar.
-        # print('postfix success')
+
 
 
 def main():
@@ -121,7 +117,7 @@ def main():
     #     ],
     # )
     print(f'Currently using: {DEVICE}.')
-    model = UNET(in_channels=1, out_channels=1).to(DEVICE)
+    model = UNET(in_channels=1, out_channels=1, features=[4, 8, 16, 32, 64]).to(DEVICE)
     # Instantiates the UNET neural network.
     loss_fn = nn.L1Loss()
     # Defines the loss function to be MAE (=Mean Average Error). Note that for
