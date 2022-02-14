@@ -85,6 +85,8 @@ def get_loaders(
 # TODO: implement SSIM as a metric for comparing similarity between two images
 # as proposed in the paper "Image Quality Assessment: From Error Visibility to
 # Structural Similarity" by Zhou et al. (2004)
+
+
 def check_accuracy(loader, model, device="cuda"):
     num_correct = 0
     num_pixels = 0

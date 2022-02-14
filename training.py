@@ -87,7 +87,6 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         # postfix(): Specify additional stats to display at the end of the bar.
 
 
-
 def main():
     # Our use-case does not require transforming the training data.
     # train_transform = A.Compose(
@@ -117,7 +116,8 @@ def main():
     #     ],
     # )
     print(f'Currently using: {DEVICE}.')
-    model = UNET(in_channels=1, out_channels=1, features=[4, 8, 16, 32, 64]).to(DEVICE)
+    model = UNET(in_channels=1, out_channels=1,
+                 features=[4, 8, 16, 32, 64]).to(DEVICE)
     # Instantiates the UNET neural network.
     loss_fn = nn.L1Loss()
     # Defines the loss function to be MAE (=Mean Average Error). Note that for
