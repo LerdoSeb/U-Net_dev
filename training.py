@@ -7,7 +7,6 @@ import torch.optim as optim
 from model import UNET
 from utils import MSLELoss, get_loaders, check_accuracy
 
-
 # Hyperparameters etc.
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
@@ -99,7 +98,8 @@ def main():
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
-    train_loader, val_loader = get_loaders(BATCH_SIZE, NUM_WORKERS, PIN_MEMORY)
+    train_loader, val_loader, test_loader = get_loaders(
+        BATCH_SIZE, NUM_WORKERS, PIN_MEMORY)
 
     scaler = torch.cuda.amp.GradScaler()
 

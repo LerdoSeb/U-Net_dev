@@ -44,13 +44,13 @@ def get_loaders(
     # Implement a 90/10/10:train/dev/test split:
     # Consider that the couette solver yields 1100 - 1 timesteps
     number_train = int(0.9*total_images)
-    number_dev = int(0.95*total_images)
+    number_val = int(0.95*total_images)
     my_train_images = my_shuffled_images[:number_train]
     my_train_masks = my_shuffled_masks[:number_train]
-    my_dev_images = my_shuffled_images[number_train:number_dev]
-    my_dev_masks = my_shuffled_masks[number_train:number_dev]
-    my_val_images = my_shuffled_images[number_dev:]
-    my_val_masks = my_shuffled_masks[number_dev:]
+    my_val_images = my_shuffled_images[number_train:number_val]
+    my_val_masks = my_shuffled_masks[number_train:number_val]
+    my_test_images = my_shuffled_images[number_val:]
+    my_test_masks = my_shuffled_masks[number_val:]
 
     train_ds = MyFlowDataset(
         my_train_images,
@@ -65,33 +65,33 @@ def get_loaders(
         # pin_memory=pin_memory,
     )
 
-    dev_ds = MyFlowDataset(
-            my_dev_images,
-            my_dev_masks,
+    val_ds = MyFlowDataset(
+            my_val_images,
+            my_val_masks,
         )
 
-    dev_loader = DataLoader(
-            dataset=dev_ds,
+    val_loader = DataLoader(
+            dataset=val_ds,
             batch_size=batch_size,
             shuffle=False,
             num_workers=num_workers,
             # pin_memory=pin_memory,
         )
 
-    val_ds = MyFlowDataset(
-        my_val_images,
-        my_val_masks,
+    test_ds = MyFlowDataset(
+        my_test_images,
+        my_test_masks,
     )
 
-    val_loader = DataLoader(
-        dataset=val_ds,
+    test_loader = DataLoader(
+        dataset=test_ds,
         batch_size=batch_size,
         shuffle=False,
         num_workers=num_workers,
         # pin_memory=pin_memory,
     )
 
-    return train_loader, dev_loader, val_loader
+    return train_loader, val_loader, test_loader
 
 # TODO: implement SSIM as a metric for comparing similarity between two images
 # as proposed in the paper "Image Quality Assessment: From Error Visibility to
