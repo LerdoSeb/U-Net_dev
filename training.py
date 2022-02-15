@@ -10,7 +10,7 @@ from utils import MSLELoss, get_loaders, check_accuracy
 # Hyperparameters etc.
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
-BATCH_SIZE = 5
+BATCH_SIZE = 32
 NUM_EPOCHS = 10
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 64  # 1280 originally
@@ -83,6 +83,21 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         # postfix(): Specify additional stats to display at the end of the bar.
 
 
+def val_fn(loader, model, loss_fn):
+
+    loop = tqdm(loader)
+
+    for batch_idx, (data, targets) in enumerate(loop):
+        data = data.float().unsqueeze(1).to(device=DEVICE)
+        targets = targets.float().unsqueeze(1).to(device=DEVICE)
+
+        with torch.cuda.amp.autocast():
+            predictions = model(data)
+            loss = loss_fn(predictions.float(), targets.float())
+
+        loop.set_postfix(loss=loss.item())
+
+
 def main():
 
     print(f'Currently using device (cuda/CPU): {DEVICE}.')
@@ -94,7 +109,7 @@ def main():
     # Defines the loss function to be MAE (=Mean Average Error).
 
     # loss_fn = MSLELoss()
-    # Defines the loss function to be Root Mean Squared Logarithmic Error
+    # Defines the loss function to be Mean Squared Logarithmic Error
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
@@ -108,6 +123,7 @@ def main():
         # To save the model, refer to the original code described by Aladdin
         # Persson (YouTube, GitHub)
 
+    val_fn(val_loader, model, loss_fn)
 
 if __name__ == "__main__":
     main()
