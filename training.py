@@ -17,10 +17,6 @@ IMAGE_HEIGHT = 64  # 1280 originally
 IMAGE_WIDTH = 64  # 1918 originally
 PIN_MEMORY = True
 LOAD_MODEL = False
-# TRAIN_IMG_DIR = "data/train_images/"
-# TRAIN_MASK_DIR = "data/train_masks/"
-# VAL_IMG_DIR = "data/val_images/"
-# VAL_MASK_DIR = "data/val_masks/"
 
 
 def train_fn(loader, model, optimizer, loss_fn, scaler):
@@ -131,21 +127,8 @@ def main():
 
     for epoch in range(NUM_EPOCHS):
         train_fn(train_loader, model, optimizer, loss_fn, scaler)
-
-        # save model
-        # checkpoint = {
-        #     "state_dict": model.state_dict(),
-        #     "optimizer":optimizer.state_dict(),
-        # }
-        # save_checkpoint(checkpoint)
-
-        # check accuracy
-        # check_accuracy(val_loader, model, device=DEVICE)
-
-        # print some examples to a folder
-        # save_predictions_as_imgs(
-        #     val_loader, model, folder="saved_images/", device=DEVICE
-        # )
+        # To save the model, refer to the original code described by Aladdin
+        # Persson (YouTube, GitHub)
 
 
 if __name__ == "__main__":
