@@ -106,7 +106,7 @@ def main():
 
     print(f'Currently using device (cuda/CPU): {DEVICE}.')
     model = UNET(in_channels=1, out_channels=1,
-                 features=[4, 8, 16]).to(DEVICE)
+                 features=[4, 8, 16, 32]).to(DEVICE)
     # Instantiates the UNET neural network.
 
     loss_fn = nn.L1Loss()
