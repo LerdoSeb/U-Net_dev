@@ -84,6 +84,7 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
 
     return loss
 
+
 def val_fn(loader, model, loss_fn):
 
     loop = tqdm(loader)
@@ -123,15 +124,20 @@ def main():
     training_loss = 0.0
 
     for epoch in range(NUM_EPOCHS):
-        training_loss = train_fn(train_loader, model, optimizer, loss_fn, scaler)
+        training_loss = train_fn(
+            train_loader, model, optimizer, loss_fn, scaler)
         # To save the model, refer to the original code described by Aladdin
         # Persson (YouTube, GitHub)
 
     print(f'Currently using validation set:')
     val_loss = val_fn(val_loader, model, loss_fn)
 
-    print(f'The model currently yields a training loss of: {training_loss} and a validation loss of: {val_loss}.')
+    print(f'Currently using test set:')
+    test_loss = val_fn(test_loader, model, loss_fn)
 
+    print(f'The model currently yields a training loss of: {training_loss}.')
+    print(f'The model currently yields a val loss of: {val_loss}.')
+    print(f'The model currently yields a test loss of: {test_loss}.')
 
 
 if __name__ == "__main__":
