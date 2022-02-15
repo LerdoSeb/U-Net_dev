@@ -1,6 +1,7 @@
 import torch
 # import albumentations as A
 # from albumentations.pytorch import ToTensorV2
+import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import torch.nn as nn
@@ -134,11 +135,7 @@ def main():
         # To save the model, refer to the original code described by Aladdin
         # Persson (YouTube, GitHub)
 
-    plt.plot(losses)
-    plt.ylabel('Loss')
-    plt.xlabel('Epoch')
-    plt.title('Loss after given epoch')
-    plt.show()
+    np.savetxt("losses_file.csv", losses, delimiter=", ")
 
     print('Currently using validation set:')
     val_loss = val_fn(val_loader, model, loss_fn)
