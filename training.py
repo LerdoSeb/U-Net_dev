@@ -11,7 +11,7 @@ from utils import MSLELoss, get_loaders, check_accuracy
 LEARNING_RATE = 1e-4
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 32
-NUM_EPOCHS = 10
+NUM_EPOCHS = 50
 NUM_WORKERS = 2
 IMAGE_HEIGHT = 64  # 1280 originally
 IMAGE_WIDTH = 64  # 1918 originally
@@ -124,6 +124,7 @@ def main():
         # Persson (YouTube, GitHub)
 
     val_fn(val_loader, model, loss_fn)
+
 
 if __name__ == "__main__":
     main()
