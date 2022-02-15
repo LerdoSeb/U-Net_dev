@@ -1,12 +1,12 @@
-import csv
-import numpy as np
 import matplotlib.pyplot as plt
 
+losses = []
 
-with open(losses_file.csv, 'r') as losses_f:
-    data_iter = csv.reader(losses_f, delimiter=', ')
-    losses = [data for data in data_iter]
+with open('losses_file.txt', 'r') as f:
+    for line in f:
+        losses.append(float(line))
 
+print(losses)
 
 plt.style.use(['science'])
 plt.plot(losses)
