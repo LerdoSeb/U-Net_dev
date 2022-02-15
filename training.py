@@ -138,7 +138,6 @@ def main():
     plt.ylabel('Loss')
     plt.xlabel('Epoch')
     plt.title('Loss after given epoch')
-    plt.legend()
     plt.show()
 
     print('Currently using validation set:')
