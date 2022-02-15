@@ -31,10 +31,12 @@ def get_loaders(
     batch_size,
     num_workers,
     pin_memory,
+    couette_dim
 ):
     # Consider that the couette solver now requires a desired_timesteps
     # parameter for improved reusabilty
-    my_couette_data = my2DCouetteSolver(desired_timesteps=10000)
+    my_couette_data = my2DCouetteSolver(
+        desired_timesteps=10000, vertical_resolution=couette_dim)
     my_images = my_couette_data[:-1]
     my_masks = my_couette_data[1:]
     my_zip = list(zip(my_images, my_masks))
