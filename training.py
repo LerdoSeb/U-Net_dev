@@ -82,6 +82,7 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
         loop.set_postfix(loss=loss.item())
         # postfix(): Specify additional stats to display at the end of the bar.
 
+    return loss
 
 def val_fn(loader, model, loss_fn):
 
@@ -96,6 +97,8 @@ def val_fn(loader, model, loss_fn):
             loss = loss_fn(predictions.float(), targets.float())
 
         loop.set_postfix(loss=loss.item())
+
+    return loss
 
 
 def main():
@@ -117,13 +120,18 @@ def main():
         BATCH_SIZE, NUM_WORKERS, PIN_MEMORY)
 
     scaler = torch.cuda.amp.GradScaler()
+    training_loss = 0.0
 
     for epoch in range(NUM_EPOCHS):
-        train_fn(train_loader, model, optimizer, loss_fn, scaler)
+        training_loss = train_fn(train_loader, model, optimizer, loss_fn, scaler)
         # To save the model, refer to the original code described by Aladdin
         # Persson (YouTube, GitHub)
 
-    val_fn(val_loader, model, loss_fn)
+    print(f'Currently using validation set:')
+    val_loss = val_fn(val_loader, model, loss_fn)
+
+    print(f'The model currently yields a training loss of: {training_loss} and a validation loss of: {val_loss}.')
+
 
 
 if __name__ == "__main__":
