@@ -1,9 +1,20 @@
 import torch
 import torchvision
 import random
+import torch
+import torch.nn as nn
 from couette_solver import my2DCouetteSolver
 from dataset import MyFlowDataset
 from torch.utils.data import DataLoader
+
+
+class MSLELoss(nn.Module):
+    def __init__(self):
+        super().__init__()
+        self.mse = nn.MSELoss()
+
+    def forward(self, pred, actual):
+        return self.mse(torch.log(pred + 1), torch.log(actual + 1))
 
 
 def save_checkpoint(state, filename="my_checkpoint.pth.tar"):
