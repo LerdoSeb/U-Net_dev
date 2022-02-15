@@ -2,10 +2,13 @@ import torch
 # import albumentations as A
 # from albumentations.pytorch import ToTensorV2
 from tqdm import tqdm
+import matplotlib.pyplot as plt
 import torch.nn as nn
 import torch.optim as optim
 from model import UNET
 from utils import MSLELoss, get_loaders, check_accuracy
+
+plt.style.use(['science'])
 
 # Hyperparameters etc.
 LEARNING_RATE = 1e-4
@@ -116,23 +119,32 @@ def main():
     # Defines the loss function to be Mean Squared Logarithmic Error
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
-
+    couette_train_dim = 64
     train_loader, val_loader, test_loader = get_loaders(
-        BATCH_SIZE, NUM_WORKERS, PIN_MEMORY)
+        BATCH_SIZE, NUM_WORKERS, PIN_MEMORY, couette_train_dim)
 
     scaler = torch.cuda.amp.GradScaler()
     training_loss = 0.0
+    losses = []
 
     for epoch in range(NUM_EPOCHS):
         training_loss = train_fn(
             train_loader, model, optimizer, loss_fn, scaler)
+        losses.append(training_loss)
         # To save the model, refer to the original code described by Aladdin
         # Persson (YouTube, GitHub)
 
-    print(f'Currently using validation set:')
+    plt.plot(losses)
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.title('Loss after given epoch')
+    plt.legend()
+    plt.show()
+
+    print('Currently using validation set:')
     val_loss = val_fn(val_loader, model, loss_fn)
 
-    print(f'Currently using test set:')
+    print('Currently using test set:')
     test_loss = val_fn(test_loader, model, loss_fn)
 
     print(f'The model currently yields a training loss of: {training_loss}.')
