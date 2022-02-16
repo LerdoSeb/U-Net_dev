@@ -12,7 +12,7 @@ from utils import MSLELoss, get_loaders, check_accuracy
 plt.style.use(['science'])
 
 # Hyperparameters etc.
-LEARNING_RATE = 1e-3
+LEARNING_RATE = 2e-3
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 32
 NUM_EPOCHS = 50
