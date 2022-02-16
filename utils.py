@@ -35,8 +35,10 @@ def get_loaders(
 ):
     # Consider that the couette solver now requires a desired_timesteps
     # parameter for improved reusabilty
+    sigma = 0.3
     my_couette_data = my2DCouetteSolver(
-        desired_timesteps=10000, vertical_resolution=couette_dim, sigma=0.3)
+        desired_timesteps=10000, vertical_resolution=couette_dim, sigma=sigma)
+    print(f'Noise level: {sigma}.')
     my_images = my_couette_data[:-1]
     my_masks = my_couette_data[1:]
     my_zip = list(zip(my_images, my_masks))
