@@ -15,8 +15,8 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 BATCH_SIZE = 32
 NUM_EPOCHS = 30
 NUM_WORKERS = 4         # guideline: 4* num_GPU
-IMAGE_HEIGHT = 64       # 1280 originally
-IMAGE_WIDTH = 64        # 1918 originally
+IMAGE_HEIGHT = 128       # 1280 originally
+IMAGE_WIDTH = 128        # 1918 originally
 PIN_MEMORY = True
 LOAD_MODEL = False
 
@@ -122,7 +122,7 @@ def main():
     # Defines the loss function to be Mean Squared Logarithmic Error
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
-    couette_train_dim = 64
+    couette_train_dim = 127
     train_loader, val_loader, test_loader = get_loaders(
         BATCH_SIZE, NUM_WORKERS, PIN_MEMORY, couette_train_dim)
 
