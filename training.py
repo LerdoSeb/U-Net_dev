@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 import torch.optim as optim
 from model import UNET
-from utils import MSLELoss, get_loaders, check_accuracy
+from utils import MSLELoss, get_loaders, check_accuracy, save3DArray2File
 
 plt.style.use(['science'])
 
@@ -97,6 +97,8 @@ def val_fn(loader, model, loss_fn):
 
         with torch.cuda.amp.autocast():
             predictions = model(data)
+            save3DArray2File(predictions, 'predictions')
+            save3DArray2File(targets, 'targets')
             loss = loss_fn(predictions.float(), targets.float())
 
         loop.set_postfix(loss=loss.item())
@@ -148,6 +150,7 @@ def main():
     print(f'The model currently yields a training loss of: {training_loss}.')
     print(f'The model currently yields a val loss of: {val_loss}.')
     print(f'The model currently yields a test loss of: {test_loss}.')
+
 
 
 if __name__ == "__main__":
