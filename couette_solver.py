@@ -38,6 +38,26 @@ def plotFlowProfile(input_array, wall_height, vertical_resolution):
     plt.show()
 
 
+def compareFlowProfile(prediction_array, target_array, wall_height=20):
+    t, h, w = prediction_array.shape
+    v_step = wall_height / (h-1)
+    v_steps = np.arange(0, wall_height + v_step, v_step).tolist()
+
+    for i in range(t):
+        fig, ax = plt.subplots()
+        ax.plot(prediction_array[i][:, int(h/2)],
+                v_steps, label='predicted profile')
+        ax.plot(target_array[i][:, int(h/2)], v_steps,
+                label='noisy analytical profile')
+
+        plt.ylabel('Height $y$')
+        plt.xlabel('Velocity $u$')
+        plt.title('The Startup Couette Problem')
+        plt.legend()
+        plt.show()
+        fig.savefig(f'pred_vs_noisy_target_3e-1_{i}.svg')
+
+
 def plotVelocityField(input_array, wall_height=20):
     h, w = input_array.shape
     v_step = wall_height / (h-1)
@@ -61,6 +81,42 @@ def plotVelocityField(input_array, wall_height=20):
     plt.xlabel('Depth $x$')
     plt.title('The Startup Couette Velocity Field (Cross-Section)')
     plt.show()
+
+
+def compareVelocityField(prediction_array, target_array, wall_height=20):
+    t, h, w = prediction_array.shape
+    v_step = wall_height / (h-1)
+    v_steps = np.arange(0, wall_height + v_step, v_step).tolist()
+
+    X1, Y1 = np.meshgrid(v_steps, v_steps)
+
+    for i in range(t):
+        # set plot parameters
+        # u - velocity component in x-direction
+        # v - velocity component in y-direction
+        u_pred = prediction_array[i]
+        u_targ = target_array[i]
+        v = np.zeros(shape=u_pred.shape)
+
+        # set color field for better visualisation
+        n = -2
+        color = np.sqrt(((v-n)/2)*2 + ((u_pred-n)/2)*2)
+
+        fig, (ax1, ax2) = plt.subplots(1, 2)
+
+        ax1.quiver(X1, Y1, u_pred, v, color, alpha=0.75)
+        ax1.set_aspect('equal')
+        ax1.set_title('predicted velocity field')
+        ax1.set_xlabel('Depth $x$')
+        ax1.set_ylabel('Height $y$')
+
+        ax2.quiver(X1, Y1, u_targ, v, color, alpha=0.75)
+        ax2.set_aspect('equal')
+        ax2.set_title('noisy analytical velocity field')
+        ax2.set_xlabel('Depth $x$')
+        fig.suptitle('The Startup Couette Velocity Field (Cross-Section)')
+        plt.show()
+        fig.savefig(f'pred_vs_noisy_target_v_field_3e-1_{i}.svg')
 
 
 def expandVector2Matrix(input_list):
