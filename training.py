@@ -97,10 +97,12 @@ def val_fn(loader, model, loss_fn):
 
         with torch.cuda.amp.autocast():
             predictions = model(data)
+            torch.save(predictions,'predictions.txt')
+            torch.save(targets,'targets.txt')
             # save3DArray2File(predictions, 'predictions')
             # save3DArray2File(targets, 'targets')
-            print(f'Prediction datatype: {type(predictions)}')
-            print(f'Prediction shape: {predictions.shape}')
+            #print(f'Prediction datatype: {type(predictions)}')
+            #print(f'Prediction shape: {predictions.shape}')
             loss = loss_fn(predictions.float(), targets.float())
 
         loop.set_postfix(loss=loss.item())
