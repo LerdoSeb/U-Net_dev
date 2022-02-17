@@ -151,7 +151,7 @@ def save3DArray2File(input_array, prediction):
     input_reshaped = input_array.reshape(input_array.shape[0], -1)
 
     # 2) Save 2D array to file
-    t, x, y = input_array.shape
+    t, c, x, y = input_array.shape
     name = f'{prediction}_{t}_{x}_{y}'
     np.savetxt(f'{name}.csv', input_reshaped)
 
