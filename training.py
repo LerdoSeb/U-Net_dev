@@ -144,13 +144,12 @@ def main():
     print('Currently using validation set:')
     val_loss = val_fn(val_loader, model, loss_fn)
 
-    print('Currently using test set:')
-    test_loss = val_fn(test_loader, model, loss_fn)
+    # print('Currently using test set:')
+    # test_loss = val_fn(test_loader, model, loss_fn)
 
     print(f'The model currently yields a training loss of: {training_loss}.')
     print(f'The model currently yields a val loss of: {val_loss}.')
-    print(f'The model currently yields a test loss of: {test_loss}.')
-
+    # print(f'The model currently yields a test loss of: {test_loss}.')
 
 
 if __name__ == "__main__":
