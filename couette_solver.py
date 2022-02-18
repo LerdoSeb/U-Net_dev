@@ -6,8 +6,8 @@ plt.style.use(['science'])
 np.set_printoptions(precision=2)
 
 
-def applyNoise(input_array, sigma):
-    output_array = np.random.normal(input_array, abs(input_array*sigma))
+def applyNoise(input_array, sigma, u_wall=10):
+    output_array = np.random.normal(input_array, abs(u_wall*sigma))
     return output_array
 
 
