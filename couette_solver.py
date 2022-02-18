@@ -43,15 +43,15 @@ def compareFlowProfile(prediction_array, target_array, wall_height=20):
     v_step = wall_height / (h-1)
     v_steps = np.arange(0, wall_height + v_step, v_step).tolist()
 
-    for i in range(t):
+    for i in range(2):
         fig, ax = plt.subplots()
-        ax.plot(prediction_array[i][:, int(h/2)],
-                v_steps, label='predicted profile')
-        ax.plot(target_array[i][:, int(h/2)], v_steps,
-                label='noisy analytical profile')
+        ax.plot(v_steps, prediction_array[i][:, int(
+            h/2)], label='predicted profile')
+        ax.plot(v_steps, target_array[i][:, int(
+            h/2)], label='noisy analytical profile')
 
-        plt.ylabel('Height $y$')
-        plt.xlabel('Velocity $u$')
+        plt.xlabel('Height $z$')
+        plt.ylabel('Velocity $u$')
         plt.title('The Startup Couette Problem')
         plt.legend()
         plt.show()
@@ -106,17 +106,18 @@ def compareVelocityField(prediction_array, target_array, wall_height=20):
 
         ax1.quiver(X1, Y1, u_pred, v, color, alpha=0.75)
         ax1.set_aspect('equal')
-        ax1.set_title('predicted velocity field')
+        ax1.set_title('predicted')
         ax1.set_xlabel('Depth $x$')
-        ax1.set_ylabel('Height $y$')
+        ax1.set_ylabel('Height $z$')
 
         ax2.quiver(X1, Y1, u_targ, v, color, alpha=0.75)
         ax2.set_aspect('equal')
-        ax2.set_title('noisy analytical velocity field')
+        ax2.set_title('noisy analytical')
         ax2.set_xlabel('Depth $x$')
         fig.suptitle('The Startup Couette Velocity Field (Cross-Section)')
         plt.show()
         fig.savefig(f'pred_vs_noisy_target_v_field_3e-1_{i}.svg')
+
 
 
 def expandVector2Matrix(input_list):
