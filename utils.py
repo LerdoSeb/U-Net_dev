@@ -28,12 +28,7 @@ def load_checkpoint(checkpoint, model):
     model.load_state_dict(checkpoint["state_dict"])
 
 
-def get_loaders(
-    batch_size,
-    num_workers,
-    pin_memory,
-    couette_dim
-):
+def get_loaders(batch_size, num_workers, pin_memory, couette_dim):
     # Consider that the couette solver now requires a desired_timesteps
     # parameter for improved reusabilty
     sigma = 0.3
@@ -129,9 +124,8 @@ def check_accuracy(loader, model, device="cuda"):
     model.train()
 
 
-def save_predictions_as_imgs(
-    loader, model, folder="saved_images/", device="cuda"
-):
+def save_predictions_as_imgs(loader, model, folder="saved_images/", device="cuda"):
+
     model.eval()
     for idx, (x, y) in enumerate(loader):
         x = x.to(device=device)
@@ -144,33 +138,3 @@ def save_predictions_as_imgs(
         torchvision.utils.save_image(y.unsqueeze(1), f"{folder}{idx}.png")
 
     model.train()
-
-
-def save3DArray2File(input_array, prediction):
-    # 1) Convert 3D array to 2D array
-    input_reshaped = input_array.reshape(input_array.shape[0], -1)
-
-    # 2) Save 2D array to file
-    t, c, x, y = input_array.shape
-    name = f'{prediction}_{t}_{x}_{y}'
-    np.savetxt(f'{name}.csv', input_reshaped)
-
-
-def load3DArrayFromFile(input_file, input_shape):
-    # 3) load 2D array from file
-    loaded_array = np.loadtxt(f'{input_file}')
-
-    # 4) Revert 2D array to 3D array
-    original_array = loaded_array.reshape(
-        loaded_array.shape[0], loaded_array.shape[1] // input_shape[2], input_shape[2])
-    return original_array
-
-
-def checkSaveLoad(input_array, loaded_array):
-    print("shape of input array: ", input_array.shape)
-    print("shape of loaded array: ", loaded_array.shape)
-
-    if (input_array == loaded_array).all():
-        print("Yes, both the arrays are same")
-    else:
-        print("No, both the arrays are not same")
