@@ -49,7 +49,7 @@ class UNET(nn.Module):
     # depth.
 
     def __init__(
-            self, in_channels=3, out_channels=1, features=[64, 128, 256, 512],
+            self, in_channels=32, out_channels=32, features=[64, 128, 256, 512],
     ):
         # PARAMETERS:
         # in_channels - channels contained in input data
@@ -59,7 +59,7 @@ class UNET(nn.Module):
         super(UNET, self).__init__()
         self.ups = nn.ModuleList()
         self.downs = nn.ModuleList()
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
+        self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
         # This creates special lists to store nn.Modules for the contracting and
         # expanding path. it is iterable.
 
@@ -71,7 +71,7 @@ class UNET(nn.Module):
         # Up part of UNET
         for feature in reversed(features):
             self.ups.append(
-                nn.ConvTranspose2d(
+                nn.ConvTranspose3d(
                     feature*2, feature, kernel_size=2, stride=2,
                 )
             )
@@ -81,7 +81,7 @@ class UNET(nn.Module):
         self.bottleneck = DoubleConv(features[-1], features[-1]*2)
 
         # This is the model's output.
-        self.final_conv = nn.Conv2d(features[0], out_channels, kernel_size=1)
+        self.final_conv = nn.Conv3d(features[0], out_channels, kernel_size=1)
 
     def forward(self, x):
         # The forward method is an inherited method from the parent class
@@ -122,7 +122,7 @@ class UNET(nn.Module):
 
 
 def test():
-    x = torch.randn((1, 1, 65, 64))
+    x = torch.randn((1, 64, 64, 64))
     model = UNET(in_channels=1, out_channels=1)
     preds = model(x)
     assert preds.shape == x.shape

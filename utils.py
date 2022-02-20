@@ -4,7 +4,7 @@ import random
 import torch
 import torch.nn as nn
 import numpy as np
-from couette_solver import my2DCouetteSolver
+from couette_solver import my2DCouetteSolver, my3DCouetteSolver
 from dataset import MyFlowDataset
 from torch.utils.data import DataLoader
 
@@ -32,8 +32,8 @@ def get_loaders(batch_size, num_workers, pin_memory, couette_dim):
     # Consider that the couette solver now requires a desired_timesteps
     # parameter for improved reusabilty
     sigma = 0.3
-    my_couette_data = my2DCouetteSolver(
-        desired_timesteps=10000, vertical_resolution=couette_dim, sigma=sigma)
+    my_couette_data = my3DCouetteSolver(
+        desired_timesteps=1000, vertical_resolution=couette_dim, sigma=sigma)
     print(f'Noise level: {sigma}.')
     my_images = my_couette_data[:-1]
     my_masks = my_couette_data[1:]

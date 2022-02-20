@@ -132,7 +132,7 @@ def main():
     # Defines the loss function to be Mean Squared Logarithmic Error
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
-    couette_train_dim = 127
+    couette_train_dim = 31
     train_loader, val_loader, test_loader = get_loaders(
         BATCH_SIZE, NUM_WORKERS, PIN_MEMORY, couette_train_dim)
 
