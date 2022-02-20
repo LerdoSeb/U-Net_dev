@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torchvision.transforms.functional as TF
+from torchsummary import summary
 
 
 # This Pytorch implementation of the well-known U-Net architecture was presented
@@ -25,14 +26,16 @@ class DoubleConv(nn.Module):
         # output data
         super(DoubleConv, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv3d(in_channels, out_channels, 3, 1, 1, bias=False),
+            nn.Conv3d(in_channels, out_channels, 3, 1, padding='same',
+                      bias=False, padding_mode='reflect'),
             # PARAMETERS:
             # 3: kernel_size
             # 1: stride
             # 1: padding -> same padding
             nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True),
-            nn.Conv3d(out_channels, out_channels, 3, 1, 1, bias=False),
+            nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1,
+                      padding='same', bias=False, padding_mode='reflect'),
             nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True),
         )
@@ -81,7 +84,8 @@ class UNET(nn.Module):
         self.bottleneck = DoubleConv(features[-1], features[-1]*2)
 
         # This is the model's output.
-        self.final_conv = nn.Conv3d(features[0], out_channels, kernel_size=1)
+        self.final_conv = nn.Conv3d(
+            features[0], out_channels, kernel_size=1, stride=1, padding='same', bias=False, padding_mode='reflect')
 
     def forward(self, x):
         # The forward method is an inherited method from the parent class
@@ -112,8 +116,8 @@ class UNET(nn.Module):
             x = self.ups[idx](x)
             skip_connection = skip_connections[idx//2]
 
-            if x.shape != skip_connection.shape:
-                x = TF.resize(x, size=skip_connection.shape[2:])
+            # if x.shape != skip_connection.shape:
+            #    x = TF.resize(x, size=skip_connection.shape[2:])
 
             concat_skip = torch.cat((skip_connection, x), dim=1)
             x = self.ups[idx+1](concat_skip)
@@ -122,9 +126,11 @@ class UNET(nn.Module):
 
 
 def test():
-    x = torch.randn((1, 64, 64, 64))
-    model = UNET(in_channels=1, out_channels=1)
-    preds = model(x)
+    x = torch.randn((1, 32, 32, 32))
+    summary(UNET, input_size=(64, 64, 64))
+
+    model=UNET(in_channels=32, out_channels=32)
+    preds=model(x)
     assert preds.shape == x.shape
 
 
