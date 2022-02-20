@@ -127,10 +127,10 @@ class UNET(nn.Module):
 
 def test():
     x = torch.randn((1, 32, 32, 32))
-    summary(UNET, input_size=(64, 64, 64))
+    # summary(UNET, input_size=(64, 64, 64))
 
-    model=UNET(in_channels=32, out_channels=32)
-    preds=model(x)
+    model = UNET(in_channels=32, out_channels=32)
+    preds = model(x)
     assert preds.shape == x.shape
 
 
