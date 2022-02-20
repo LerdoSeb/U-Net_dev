@@ -25,15 +25,15 @@ class DoubleConv(nn.Module):
         # output data
         super(DoubleConv, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias=False),
+            nn.Conv3d(in_channels, out_channels, 3, 1, 1, bias=False),
             # PARAMETERS:
             # 3: kernel_size
             # 1: stride
             # 1: padding -> same padding
-            nn.BatchNorm2d(out_channels),
+            nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True),
-            nn.Conv2d(out_channels, out_channels, 3, 1, 1, bias=False),
-            nn.BatchNorm2d(out_channels),
+            nn.Conv3d(out_channels, out_channels, 3, 1, 1, bias=False),
+            nn.BatchNorm3d(out_channels),
             nn.ReLU(inplace=True),
         )
 
