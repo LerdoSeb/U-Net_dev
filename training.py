@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import torch.nn as nn
 import torch.optim as optim
 from model import UNET
-from utils import MSLELoss, get_loaders, check_accuracy, save3DArray2File
+from utils import get_loaders  # , MSLELoss, check_accuracy, save3DArray2File
 
 plt.style.use(['science'])
 

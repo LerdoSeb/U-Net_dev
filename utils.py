@@ -4,7 +4,7 @@ import random
 import torch
 import torch.nn as nn
 import numpy as np
-from couette_solver import my2DCouetteSolver, my3DCouetteSolver
+from couette_solver import my3DCouetteSolver
 from dataset import MyFlowDataset
 from torch.utils.data import DataLoader
 
