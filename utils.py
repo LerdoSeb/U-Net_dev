@@ -46,6 +46,8 @@ def get_loaders(batch_size, num_workers, pin_memory, couette_dim):
     number_train = int(0.9*total_images)
     number_val = int(0.95*total_images)
     my_train_images = my_shuffled_images[:number_train]
+    print(type(my_train_images))
+    print(my_train_images[0].shape)
     my_train_masks = my_shuffled_masks[:number_train]
     my_val_images = my_shuffled_images[number_train:number_val]
     my_val_masks = my_shuffled_masks[number_train:number_val]
@@ -56,7 +58,7 @@ def get_loaders(batch_size, num_workers, pin_memory, couette_dim):
         my_train_images,
         my_train_masks,
     )
-
+    print(type(train_ds[7]))
     train_loader = DataLoader(
         dataset=train_ds,
         batch_size=batch_size,
@@ -138,3 +140,7 @@ def save_predictions_as_imgs(loader, model, folder="saved_images/", device="cuda
         torchvision.utils.save_image(y.unsqueeze(1), f"{folder}{idx}.png")
 
     model.train()
+
+
+train_loader, val_loader, test_loader = get_loaders(
+    32, 1, True, 31)
