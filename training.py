@@ -103,8 +103,8 @@ def val_fn(loader, model, loss_fn):
             print(f'Predict_array datatype: {type(predict_array)}')
             target_array = targets.cpu().detach().numpy()
             print(f'Target_array datatype: {type(target_array)}')
-            save3DArray2File(predict_array, 'predictions')
-            save3DArray2File(target_array, 'targets')
+            # save3DArray2File(predict_array, 'predictions')
+            # save3DArray2File(target_array, 'targets')
             # print(f'Prediction datatype: {type(predictions)}')
             # print(f'Prediction shape: {predictions.shape}')
             loss = loss_fn(predictions.float(), targets.float())
@@ -121,7 +121,7 @@ def main():
     print(f'Number of epochs: {NUM_EPOCHS}.')
     print(f'Learning rate: {LEARNING_RATE}.')
 
-    model = UNET(in_channels=1, out_channels=1,
+    model = UNET(in_channels=32, out_channels=32,
                  features=[4, 8, 16, 32]).to(DEVICE)
     # Instantiates the UNET neural network.
 
@@ -147,7 +147,7 @@ def main():
         # To save the model, refer to the original code described by Aladdin
         # Persson (YouTube, GitHub)
 
-    np.savetxt("losses_file.csv", losses, delimiter=", ")
+    # np.savetxt("losses_file.csv", losses, delimiter=", ")
 
     print('Currently using validation set:')
     val_loss = val_fn(val_loader, model, loss_fn)

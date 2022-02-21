@@ -26,17 +26,17 @@ class DoubleConv(nn.Module):
         # output data
         super(DoubleConv, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv3d(in_channels, out_channels, 3, 1, padding='same',
+            nn.Conv2d(in_channels, out_channels, 3, 1, padding='same',
                       bias=False, padding_mode='reflect'),
             # PARAMETERS:
             # 3: kernel_size
             # 1: stride
             # 1: padding -> same padding
-            nn.BatchNorm3d(out_channels),
+            nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
-            nn.Conv3d(out_channels, out_channels, kernel_size=3, stride=1,
+            nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1,
                       padding='same', bias=False, padding_mode='reflect'),
-            nn.BatchNorm3d(out_channels),
+            nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
         )
 
@@ -62,7 +62,7 @@ class UNET(nn.Module):
         super(UNET, self).__init__()
         self.ups = nn.ModuleList()
         self.downs = nn.ModuleList()
-        self.pool = nn.MaxPool3d(kernel_size=2, stride=2)
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
         # This creates special lists to store nn.Modules for the contracting and
         # expanding path. it is iterable.
 
@@ -74,7 +74,7 @@ class UNET(nn.Module):
         # Up part of UNET
         for feature in reversed(features):
             self.ups.append(
-                nn.ConvTranspose3d(
+                nn.ConvTranspose2d(
                     feature*2, feature, kernel_size=2, stride=2,
                 )
             )
@@ -84,7 +84,7 @@ class UNET(nn.Module):
         self.bottleneck = DoubleConv(features[-1], features[-1]*2)
 
         # This is the model's output.
-        self.final_conv = nn.Conv3d(
+        self.final_conv = nn.Conv2d(
             features[0], out_channels, kernel_size=1, stride=1, padding='same', bias=False, padding_mode='reflect')
 
     def forward(self, x):
@@ -127,11 +127,11 @@ class UNET(nn.Module):
 
 def test():
     x = torch.randn((1, 32, 32, 32))
-    # summary(UNET, input_size=(64, 64, 64))
 
-    model = UNET(in_channels=32, out_channels=32)
-    preds = model(x)
-    assert preds.shape == x.shape
+    model = UNET(in_channels=64, out_channels=64, features=[4, 8, 16, 32])
+    summary(model, input_size=(64, 64, 64))
+    # preds = model(x)
+    # assert preds.shape == x.shape
 
 
 if __name__ == "__main__":
