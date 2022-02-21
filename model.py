@@ -27,7 +27,7 @@ class DoubleConv(nn.Module):
         super(DoubleConv, self).__init__()
         self.conv = nn.Sequential(
             nn.Conv2d(in_channels, out_channels, 3, 1, 1,
-                      bias=False, padding_mode='reflect'),
+                      bias=False),
             # PARAMETERS:
             # 3: kernel_size
             # 1: stride
@@ -35,7 +35,7 @@ class DoubleConv(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(out_channels, out_channels, kernel_size=3, stride=1,
-                      padding='same', bias=False),
+                      padding=1, bias=False),
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
         )
@@ -85,7 +85,7 @@ class UNET(nn.Module):
 
         # This is the model's output.
         self.final_conv = nn.Conv2d(
-            features[0], out_channels, kernel_size=1, stride=1, padding='same', bias=False, padding_mode='reflect')
+            features[0], out_channels, kernel_size=1, stride=1)
 
     def forward(self, x):
         # The forward method is an inherited method from the parent class
