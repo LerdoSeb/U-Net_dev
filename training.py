@@ -28,8 +28,10 @@ def train_fn(loader, model, optimizer, loss_fn, scaler):
     # using tqdm(iterable).
 
     for batch_idx, (data, targets) in enumerate(loop):
-        data = data.float().unsqueeze(1).to(device=DEVICE)
-        targets = targets.float().unsqueeze(1).to(device=DEVICE)
+        data = data.float().to(device=DEVICE)
+        targets = targets.float().to(device=DEVICE)
+        # data = data.float().unsqueeze(1).to(device=DEVICE)
+        # targets = targets.float().unsqueeze(1).to(device=DEVICE)
 
         # First consider the forward training path. This means calculate the
         # the predictions and determine the resultung error using the loss_fn.
@@ -149,14 +151,14 @@ def main():
 
     # np.savetxt("losses_file.csv", losses, delimiter=", ")
 
-    print('Currently using validation set:')
-    val_loss = val_fn(val_loader, model, loss_fn)
+    # print('Currently using validation set:')
+    # val_loss = val_fn(val_loader, model, loss_fn)
 
     # print('Currently using test set:')
     # test_loss = val_fn(test_loader, model, loss_fn)
 
     print(f'The model currently yields a training loss of: {training_loss}.')
-    print(f'The model currently yields a val loss of: {val_loss}.')
+    # print(f'The model currently yields a val loss of: {val_loss}.')
     # print(f'The model currently yields a test loss of: {test_loss}.')
 
 
